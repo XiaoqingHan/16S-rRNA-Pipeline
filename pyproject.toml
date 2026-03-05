@@ -1,0 +1,40 @@
+[build-system]
+# choose set-up tool, usually use setuptools
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+# basic info
+name = "16S-rRNA-Pipeline"      # the name of project or installation package, showing during installing
+version = "0.1.0"               # version number
+description = "A bioinformatics analysis pipeline for 16S rRNA data."
+readme = "README.md"            
+requires-python = ">=3.8"       # minimum version for Python
+authors = [
+    { name = "Xiaoqing Han", email = "xhan723@hotmail.com" }
+]
+license = { text = "MIT" }      # open source protocol
+
+# requirements 
+dependencies = [
+    "pandas >= 2.0.0",
+    "numpy >= 1.21.0",
+    "matplotlib >= 3.7.0",
+    "seaborn >= 0.12.0",
+    "scipy >= 1.10.0",
+]
+
+# commands = package.file:function
+[project.scripts]
+16s-preprocess = "bio_16s_pipeline.read_preprocessing:main"
+16s-build-db = "bio_16s_pipeline.kmer_db:main"
+16s-optimize-k = "bio_16s_pipeline.k_selection:main"
+16s-rm-chimera = "bio_16s_pipeline.chimera_removal:main"
+16s-profile = "bio_16s_pipeline.calculate_abundance:main"
+16s-summarize = "bio_16s_pipeline.abundance_matrix:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

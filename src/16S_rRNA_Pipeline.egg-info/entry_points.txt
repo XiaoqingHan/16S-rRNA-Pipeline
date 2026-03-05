@@ -1,0 +1,7 @@
+[console_scripts]
+16s-build-db = bio_16s_pipeline.kmer_db:main
+16s-optimize-k = bio_16s_pipeline.k_selection:main
+16s-preprocess = bio_16s_pipeline.read_preprocessing:main
+16s-profile = bio_16s_pipeline.calculate_abundance:main
+16s-rm-chimera = bio_16s_pipeline.chimera_removal:main
+16s-summarize = bio_16s_pipeline.abundance_matrix:main
