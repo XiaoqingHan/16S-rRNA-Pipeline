@@ -85,4 +85,4 @@ Merge all samples into a single matrix and generate composition plots.
 
 #### Author: Xiaoqing Han
 
-#### Email: [xhan723\@hotmail.com](mailto:xhan723@hotmail.com){.email}
+#### Email: [xhan723\@hotmail.com](mailto:xhan723@hotmail.com)
