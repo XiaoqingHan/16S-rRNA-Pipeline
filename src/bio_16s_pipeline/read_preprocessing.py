@@ -158,7 +158,7 @@ def merge_paired_reads(reads1, reads2, min_overlap, max_merge_rate):
     for h in common_headers:
         s1, s2 = seq1[h], seq2[h]
         merged = False
-        max_search_overlap = int(min(len(s1), len(s2)) * 0.8)
+        max_search_overlap = int(min(len(s1), len(s2)))
         for i in range(max_search_overlap, min_overlap - 1, -1):
             if hamming_distance(s1[-i:], s2[:i]) / i <= max_merge_rate:
                 merged_seqs[f">{h}"] = s1 + s2[i:]
@@ -281,7 +281,7 @@ def process_sample(r1_path, r2_path, out_dir, config):
             lengths = [len(seq) for _, seq in qc_merged]
             logger.info(f"{lp} Final length stats: min={min(lengths)}, max={max(lengths)}, avg={sum(lengths) / len(lengths):.1f}bp.")
         else:
-            logger.info("No merged sequences passed post-merge QC.")
+            logger.info(f"{lp} No merged sequences passed post-merge QC.")
 
         # save output files
         save_files(out_merged, qc_merged)
