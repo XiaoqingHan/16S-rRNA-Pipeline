@@ -1,37 +1,28 @@
 # 16S-rRNA-Pipeline: K-mer Based Taxonomic Profiling
 
-16S-rRNA-Pipeline is a comprehensive Python package designed for high-throughput 16S rRNA amplicon sequencing analysis. By leveraging a custom K-mer voting algorithm and SQLite-backed reference databases, it provides a fast and reproducible workflow from raw FASTQ files to genus-level abundance matrices.
+16S-rRNA-Pipeline is a Python package for high-throughput 16S rRNA amplicon sequencing analysis. It uses a K-mer voting algorithm and SQLite-based reference database to generate fast and reproducible genus-level abundance profiles from raw FASTQ files.
 
 ## Installation
 
-This package can be installed directly from GitHub using pip. We recommend using a virtual environment.
+The package can be installed via GitHub using pip. 
 
 ``` bash
 pip install git+<https://github.com/XiaoqingHan/16S-rRNA-Pipeline.git>
 ```
 
-*Note: For developers who wish to modify the source code, use `pip install -e .` after cloning the repository locally.*
+For development mode:
 
-## Validation
+``` bash
+pip install -e .
+```
 
-The current version has been validated on oral microbiome 16S rRNA sequencing datasets used in this study.
+## Quick Start
 
-Validation tests included:
+After installation, all tools are available as command-line interfaces. Each tool supports `-h` for help.
 
-* Paired-end sequencing data
-* Single-end sequencing data
-* Multiple randomly selected samples
-* Installation and execution in a clean Conda environment using the GitHub installation method
+### 1. Build reference database
 
-The pipeline has been verified from installation through generation of abundance profiles and summary reports.
-
-## Quick Start Guide
-
-Once installed, the pipeline provides several command-line tools. You do not need to run Python scripts manually. Each tool supports the `-h` option to display detailed usage instructions.
-
-### 1. Prepare Reference Database
-
-Convert your reference FASTA (e.g., HOMD) into a searchable K-mer database.
+Convert reference FASTA into a searchable K-mer database.
 
 ``` bash
 16s-build-db -i HOMD.fasta -d ref_database.db -k 25
@@ -39,20 +30,22 @@ Convert your reference FASTA (e.g., HOMD) into a searchable K-mer database.
 
 ### 2. Preprocessing & Quality Control
 
-Trim primers, filter low-quality reads, and merge paired-ends.
+Trim primers, filter low-quality reads, and merge paired-end reads.
 
-Examples for paired-end and single-end data, with or without primer trimming.
+Paired-end:
 
 ``` bash
 16s-preprocess -i ./raw_data -o ./cleaned_data -m paired --trim_primer --p1 <FORWARD_PRIMER> --p2 <REVERSE_PRIMER>
-16s-preprocess -i ./raw_data -o ./cleaned_data -m single --skip_trim 
 ```
 
-Tip: If primer detection rate is 0%, try swapping the sequences of `--p1` and `--p2`.
+Single-end:
+``` bash
+16s-preprocess -i ./raw_data -o ./cleaned_data -m single --skip_trim
+```
 
 ### 3. Chimera Removal
 
-Remove potential chimeric sequences based on the reference database
+Remove PCR chimeric sequences using reference-based filtering.
 
 ``` bash
 16s-rm-chimera -i ./cleaned_data -o ./no_chimera --db ref_database.db -k 25
@@ -60,7 +53,7 @@ Remove potential chimeric sequences based on the reference database
 
 ### 4. Taxonomic Profiling
 
-Generate genus-level abundance for each sample.
+Assign reads to genera using K-mer voting against reference database.
 
 ``` bash
 16s-profile -i ./no_chimera -o ./abundance_out --db ref_database.db -k 25
@@ -68,33 +61,59 @@ Generate genus-level abundance for each sample.
 
 ### 5. Summary & Visualization
 
-Merge all samples into a single matrix and generate composition plots.
-
 ``` bash
 16s-summarize -i ./abundance_out -o ./final_report --top_n 20
 ```
 
-## Expected Input Data
+# Data & Test Datasets
 
--   **Format**: Paired-end FASTQ files (`\_1.fastq.gz, \_2.fastq.gz`); Single-end FASTQ files (`*.fastq.gz`).
+## Reference database
+HOMD (Human Oral Microbiome Database), version HOMD_16S_rRNA_RefSeq_V16.02_full.
 
--   **Organization**: Each sample should ideally be in its own sub-directory or follow a consistent naming convention within the input folder.
+## Test datasets
+### Single-end dataset
+Accession: PRJEB86033
+Region: V3–V4
+Note: Primer sequences were removed prior to analysis
 
--   **Current validation**: has been performed on oral microbiome 16S rRNA datasets using the file naming conventions described above. Additional FASTQ naming schemes may require minor adaptation.
+### Paired-end dataset
+Accession: PRJNA555320  
+Region: V4
+Forward primer: GTGCCAGCMGCCGCGGTAA  
+Reverse primer: GGACTACHVGGGTWTCTAAT  
 
-## Key Outputs
+## Input format
+- Single-end: *.fastq.gz
+- Paired-end: *_1.fastq.gz and *_2.fastq.gz (or *_R1.fastq.gz and *_R2.fastq.gz)
+Each sample should be in its own directory or follow a consistent naming convention.
 
--   `all_samples_genus_matrix.csv`: A unified matrix of genus abundances across all samples.
--   `composition.png`: A high-resolution stacked bar plot showing the top $N$ genera.
--   `*.log`: Detailed processing logs for reproducibility.
+## Outputs
 
+- `all_samples_genus_matrix.csv`: A unified matrix of genus abundances across all samples.
+- `composition.png`: A high-resolution stacked bar plot showing the top $N$ genera.
+- `*.log`: Detailed processing logs for reproducibility.
+
+## Validation
+
+The pipeline has been validated using oral microbiome 16S rRNA datasets.
+
+Validation includes:
+* Single-end and paired-end datasets
+* Multiple sample subsets
+* Execution in clean Conda environments
+* End-to-end pipeline validation from raw FASTQ files to abundance matrix and visualization outputs
+  
 ## Requirements
 
--   **Python**: 3.8+
+- all_samples_genus_matrix.csv: Genus abundance matrix across all samples
+- composition.png: Stacked bar plot of top-N genera
+- *.log: Detailed processing logs for reproducibility
 
--   **Core Dependencies**: Pandas, Numpy, Matplotlib, Seaborn, Scipy.
+## Tips
 
--   **Hardware**: Multi-threading is supported; 16GB+ RAM is recommended for large K-mer databases.
+- Use consistent FASTQ naming to avoid silent file skipping
+- Increase k-mer size improves specificity but increases runtime
+- Always use the same reference database version for comparisons
 
 ## Contact
 
