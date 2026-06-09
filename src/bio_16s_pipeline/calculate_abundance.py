@@ -48,22 +48,22 @@ def compute_abundance(seqs, sample_id, k, kmer_map):
 
 
 def process_sample(args):
-    sample_dir, db_path, k, file_suffix, out_path = args
+    in_sample_dir, db_path, k, file_suffix, out_path = args
     logger = get_logger()
-    sample_id = sample_dir.name
+    sample_id = in_sample_dir.name
 
     suffixes = [file_suffix, "_merged_no_chi.fasta.gz", "_filtered_no_chi.fasta.gz"]
     input_file = None
     for suffix in suffixes:
         if not suffix:
             continue
-        candidate = sample_dir / f"{sample_id}{suffix}"
+        candidate = in_sample_dir / f"{sample_id}{suffix}"
         if candidate.exists():
             input_file = candidate
             break
 
     if input_file is None:
-        logger.error(f"[{sample_id}] Required non-chimera file not found in {sample_dir}.")
+        logger.error(f"[{sample_id}] Required non-chimera file not found in {in_sample_dir}.")
         return None
 
     try:
@@ -82,11 +82,11 @@ def process_sample(args):
         genus_df = abundance_df.groupby(['Sample_ID', 'Genus']).agg({'Absolute_Abundance': 'sum', 'Relative_Abundance': 'sum'}).reset_index()
         genus_df = genus_df.sort_values('Absolute_Abundance', ascending=False)
 
-        sample_dir = Path(out_path) / sample_id
-        sample_dir.mkdir(parents=True, exist_ok=True)
+        out_sample_dir = Path(out_path) / sample_id
+        out_sample_dir.mkdir(parents=True, exist_ok=True)
 
-        abundance_df.to_csv(sample_dir / f"{sample_id}_species_abundance.csv", index=False)
-        genus_df.to_csv(sample_dir / f"{sample_id}_genus_abundance.csv", index=False)
+        abundance_df.to_csv(out_sample_dir / f"{sample_id}_species_abundance.csv", index=False)
+        genus_df.to_csv(out_sample_dir / f"{sample_id}_genus_abundance.csv", index=False)
 
         return sample_id
 
