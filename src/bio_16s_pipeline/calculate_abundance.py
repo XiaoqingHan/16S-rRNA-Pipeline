@@ -48,7 +48,7 @@ def compute_abundance(seqs, sample_id, k, kmer_map):
 
 
 def process_sample(args):
-    sample_dir, db_path, k, file_suffix = args
+    sample_dir, db_path, k, file_suffix, out_path = args
     logger = get_logger()
     sample_id = sample_dir.name
 
@@ -82,6 +82,9 @@ def process_sample(args):
         genus_df = abundance_df.groupby(['Sample_ID', 'Genus']).agg({'Absolute_Abundance': 'sum', 'Relative_Abundance': 'sum'}).reset_index()
         genus_df = genus_df.sort_values('Absolute_Abundance', ascending=False)
 
+        sample_dir = Path(out_path) / sample_id
+        sample_dir.mkdir(parents=True, exist_ok=True)
+
         abundance_df.to_csv(sample_dir / f"{sample_id}_species_abundance.csv", index=False)
         genus_df.to_csv(sample_dir / f"{sample_id}_genus_abundance.csv", index=False)
 
@@ -111,7 +114,7 @@ def run_pipeline(args):
 
         tasks = []
         for d in sample_dirs:
-            tasks.append((d, args.db, args.k, args.suffix))
+            tasks.append((d, args.db, args.k, args.suffix, args.output))
 
         with ctx.Pool(processes=args.threads, 
                       initializer=init_worker_logger, 
@@ -132,6 +135,7 @@ def main():
     
     group_base = parser.add_argument_group("Global Settings")
     group_base.add_argument("-i", "--input", required=True, help="Root directory containing sample folders")
+    group_base.add_argument("-o", "--output", required=True, help="Output root directory")
     group_base.add_argument("-t", "--threads", type=int, default=multiprocessing.cpu_count(), help="Number of threads")
 
     group_data = parser.add_argument_group("Data & Database Settings")
