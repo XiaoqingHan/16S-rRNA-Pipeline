@@ -4,13 +4,26 @@
 
 ## Installation
 
-Since this is a private research tool, you can install it directly from GitHub using pip. We recommend using a virtual environment.
+This package can be installed directly from GitHub using pip. We recommend using a virtual environment.
 
 ``` bash
 pip install git+<https://github.com/XiaoqingHan/16S-rRNA-Pipeline.git>
 ```
 
 *Note: For developers who wish to modify the source code, use `pip install -e .` after cloning the repository locally.*
+
+## Validation
+
+The current version has been validated on oral microbiome 16S rRNA sequencing datasets used in this study.
+
+Validation tests included:
+
+* Paired-end sequencing data
+* Single-end sequencing data
+* Multiple randomly selected samples
+* Installation and execution in a clean Conda environment using the GitHub installation method
+
+The pipeline has been verified from installation through generation of abundance profiles and summary reports.
 
 ## Quick Start Guide
 
@@ -66,6 +79,8 @@ Merge all samples into a single matrix and generate composition plots.
 -   **Format**: Paired-end FASTQ files (`\_1.fastq.gz, \_2.fastq.gz`); Single-end FASTQ files (`*.fastq.gz`).
 
 -   **Organization**: Each sample should ideally be in its own sub-directory or follow a consistent naming convention within the input folder.
+
+-   **Current validation**: has been performed on oral microbiome 16S rRNA datasets using the file naming conventions described above. Additional FASTQ naming schemes may require minor adaptation.
 
 ## Key Outputs
 
