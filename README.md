@@ -93,7 +93,7 @@ Each sample should be in its own directory or follow a consistent naming convent
 - `composition.png`: A high-resolution stacked bar plot showing the top $N$ genera.
 - `*.log`: Detailed processing logs for reproducibility.
 
-### Validation
+## Validation
 
 The pipeline has been validated using oral microbiome 16S rRNA datasets.
 
@@ -103,19 +103,19 @@ Validation includes:
 * Execution in clean Conda environments
 * End-to-end pipeline validation from raw FASTQ files to abundance matrix and visualization outputs
   
-### Requirements
+## Requirements
 
 - all_samples_genus_matrix.csv: Genus abundance matrix across all samples
 - composition.png: Stacked bar plot of top-N genera
 - *.log: Detailed processing logs for reproducibility
 
-### Tips
+## Tips
 
 - Use consistent FASTQ naming to avoid silent file skipping
 - Increase k-mer size improves specificity but increases runtime
 - Always use the same reference database version for comparisons
 
-### Contact
+## Contact
 
 #### Author: Xiaoqing Han
 
