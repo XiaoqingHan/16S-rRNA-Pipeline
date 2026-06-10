@@ -72,15 +72,15 @@ HOMD (Human Oral Microbiome Database), version HOMD_16S_rRNA_RefSeq_V16.02_full.
 
 ### Test datasets
 #### Single-end dataset
-Accession: PRJEB86033  
-Region: V3–V4  
-Note: Primer sequences were removed prior to analysis
+* Accession: PRJEB86033  
+* Region: V3–V4  
+* Note: Primer sequences were removed prior to analysis
 
 #### Paired-end dataset
-Accession: PRJNA555320  
-Region: V4  
-Forward primer: GTGCCAGCMGCCGCGGTAA    
-Reverse primer: GGACTACHVGGGTWTCTAAT  
+* Accession: PRJNA555320  
+* Region: V4  
+* Forward primer: GTGCCAGCMGCCGCGGTAA    
+* Reverse primer: GGACTACHVGGGTWTCTAAT  
 
 ### Input format
 - Single-end: *.fastq.gz
