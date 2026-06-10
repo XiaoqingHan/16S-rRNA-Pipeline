@@ -22,47 +22,49 @@ After installation, all tools are available as command-line interfaces. Each too
 
 ### 1. Build reference database
 
-Convert reference FASTA into a searchable K-mer database.
+Convert a reference FASTA into a searchable K-mer database.
 
 ``` bash
-16s-build-db -i HOMD.fasta -d ref_database.db -k 25
+16s-build-db -i ref/HOMD.fasta -d ref/ref_database.db -k 25
 ```
 
 ### 2. Preprocessing & Quality Control
 
-Trim primers, filter low-quality reads, and merge paired-end reads.
+Trim primers, perform quality filtering, and merge paired-end reads.
 
 Paired-end:
 
 ``` bash
-16s-preprocess -i ./raw_data -o ./cleaned_data -m paired --trim_primer --p1 <FORWARD_PRIMER> --p2 <REVERSE_PRIMER>
+16s-preprocess -i test_data/paired -o output/cleaned_data -m paired --trim_primer --p1 <FORWARD_PRIMER> --p2 <REVERSE_PRIMER>
 ```
 
 Single-end:
 ``` bash
-16s-preprocess -i ./raw_data -o ./cleaned_data -m single --skip_trim
+16s-preprocess -i test_data/single -o output/cleaned_data -m single --skip_trim
 ```
 
 ### 3. Chimera Removal
 
-Remove PCR chimeric sequences using reference-based filtering.
+Remove potential chimeric sequences using reference-based filtering.
 
 ``` bash
-16s-rm-chimera -i ./cleaned_data -o ./no_chimera --db ref_database.db -k 25
+16s-rm-chimera -i output/cleaned_data -o output/no_chimera --db ref/ref_database.db -k 25
 ```
 
 ### 4. Taxonomic Profiling
 
-Assign reads to genera using K-mer voting against reference database.
+Generate genus-level abundance profiles using K-mer voting against the reference database.
 
 ``` bash
-16s-profile -i ./no_chimera -o ./abundance_out --db ref_database.db -k 25
+16s-profile -i output/no_chimera -o output/abundance_out --db ref/ref_database.db -k 25
 ```
 
 ### 5. Summary & Visualization
 
+Merge individual sample profiles into a single abundance matrix and generate composition plots.
+
 ``` bash
-16s-summarize -i ./abundance_out -o ./final_report --top_n 20
+16s-summarize -i output/abundance_out -o output/final_report --top_n 20
 ```
 
 ## Data & Test Datasets
