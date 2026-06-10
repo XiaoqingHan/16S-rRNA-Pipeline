@@ -73,23 +73,29 @@ HOMD (Human Oral Microbiome Database), version HOMD_16S_rRNA_RefSeq_V16.02_full.
 ### Test datasets
 #### Single-end dataset
 Accession: PRJEB86033
+
 Region: V3–V4
+
 Note: Primer sequences were removed prior to analysis
 
 #### Paired-end dataset
 Accession: PRJNA555320  
+
 Region: V4
+
 Forward primer: GTGCCAGCMGCCGCGGTAA  
+
 Reverse primer: GGACTACHVGGGTWTCTAAT  
 
 ### Input format
 - Single-end: *.fastq.gz
 - Paired-end: *_1.fastq.gz and *_2.fastq.gz (or *_R1.fastq.gz and *_R2.fastq.gz)
+
 Each sample should be in its own directory or follow a consistent naming convention.
 
 ### Outputs
 
-- `all_samples_genus_matrix.csv`: A unified matrix of genus abundances across all samples.
+- `all_samples_genus_matrix.csv`: Genus abundance matrix across all samples.
 - `composition.png`: A high-resolution stacked bar plot showing the top $N$ genera.
 - `*.log`: Detailed processing logs for reproducibility.
 
@@ -105,9 +111,9 @@ Validation includes:
   
 ## Requirements
 
-- all_samples_genus_matrix.csv: Genus abundance matrix across all samples
-- composition.png: Stacked bar plot of top-N genera
-- *.log: Detailed processing logs for reproducibility
+- **Python**: 3.8+
+- **Core Dependencies**: Pandas, Numpy, Matplotlib, Seaborn, Scipy.
+- **Hardware**: Multi-threading is supported; 16GB+ RAM is recommended for large K-mer databases.
 
 ## Tips
 
